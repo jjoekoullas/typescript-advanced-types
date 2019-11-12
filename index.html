@@ -5,6 +5,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/theme/white.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
     <style>
         table tr td {
             vertical-align: middle !important;
@@ -15,7 +18,116 @@
 <body>
     <div class="reveal">
         <div class="slides">
-            <section></section>
+            <section>
+                <h1>Why do I care?</h1>
+                <p>Catching regressions quickly - verifying relationships at a distance.</p>
+                <p>Type signatures as documentation. Parametricity!</p>
+                <p>Verifying what is possible to JavaScript via the compiler.</p>
+            </section>
+            <section>
+                <h1>What even is Types? Sets!</h1>
+                <p>A family of values which share common features (properties, methods, functions).</p>
+            </section>
+            <section>
+                <h1>Building Blocks</h1>
+                <p>Primitives - boolean, number, string</p>
+                <p>Classes</p>
+            </section>
+            <section>
+                <h1>Antipatterns</h1>
+                <p>Primitive obsession.</p>
+                <p>Stringly-Typed.</p>
+                <p>any</p>
+            </section>
+            <section>
+                <h1>Type vs Value position</h1>
+                <pre><code class="typescript">const myInstance: MyClass = new MyClass();</code></pre>
+                <pre><code class="typescript">function&lt;MyClass&gt; { }</code></pre>
+            </section>
+            <section>
+                <h1>Augmentation</h1>
+                <p>Declaration merging - Namespaces, Types & Values</p>
+                <pre><code class="typescript">
+                    declare module 'backbone' {
+                        namespace Model {
+                            let fullExtend: &lt;TProps, TStaticProps&gt;(
+                                protoProps: TProps,
+                                staticProps?: TStaticProps,
+                            ) => DerivedClass&lt;Model &amp; TProps, TStaticProps&gt;;
+                        }
+                    }
+                </code></pre>
+                <p style="font-style: italic;">If you're fixing public types, please PR definitelyTyped.</p>
+            </section>
+            <section>
+                <h1>Aliases</h1>
+                <pre><code class="typescript">type myUsefulName = some | crazy & type&lt;shenanigans & tomfoolery&gt;</code></pre>
+                <pre><code class="typescript">type Exclude&lt;T, U&gt; = T extends U ? never : T;</code></pre>
+            </section>
+            <section>
+                <h1>Type literals</h1>
+                <pre><code class="typescript">type literallyTheStringOne = "one";</code></pre>
+                <pre><code class="typescript">type literallyTheNumberOne = 1;</code></pre>
+            </section>
+            <section>
+                <h1>Type parameterization</h1>
+                <h2>(aka Generics)</h2>
+                <p>Second most important tool - after annotating types for input & output.</p>
+                <pre><code class="typescript">class MyGenericClass&lt;Type&gt;</code></pre>
+                <pre><code class="typescript">function MyGenericClass&lt;Type&gt;</code></pre>
+                <pre><code class="typescript">type MyGenericType&lt;Type&gt;</code></pre>
+                <p style="font-style: italic;">Robert, please do not troll me about Golang. :)</p>
+            </section>
+            <section>
+                <h2>Type references & constraints</h2>
+                <pre><code class="typescript">type MyGenericlyGenericType&lt;Type, OtherGenericType&lt;Type&gt;&gt;</code></pre>
+                <pre><code class="typescript">type MyGenericTypeConstraints&lt;Type, DerivedType extends Type&gt;</code></pre>
+                <pre><code class="typescript">class MyCollection&lt;TModel extend Backbone.Model = Backbone.Model&gt;</code></pre>
+            </section>
+            <section>
+                <h1>Union - |</h1>
+                <pre><code class="typescript">type booleanOrNumber = boolean | number</code></pre>
+                <p>Only common features are valid.</p>
+                <canvas id="union"></canvas>
+            </section>
+            <section>
+                <h1>Type assertions</h1>
+                <pre><code class="typescript">
+                    function isBoolean(maybeBoolean: any): maybeBoolean is Boolean {
+                        return typeof maybeBoolean === "boolean"
+                    }
+                </code></pre>
+            </section>
+            <section>
+                <h1>Intersection - &amp;</h1>
+                <pre><code class="typescript">{ foo(): boolean } &amp; { bar(): boolean } </code></pre>
+                <canvas id="intersection"></canvas>
+                <p>Only really useful for mixin-style inheritance.</p>
+            </section>
+            <section>
+                <h1>Chaining &amp; polymorphic this</h1>
+                <p>Use this as a type.  It works exactly as you expect.</p>
+                <pre><code class="typescript">public render(): this</code></pre>
+            </section>
+            <section>
+                <h1>Mapped types</h1>
+                <pre><code class="typescript">type Readonly&lt;T&gt; = { readonly [P in keyof T]: T[P]}</code></pre>
+                <pre><code class="typescript">type Partial&lt;T&gt; = { [P in keyof T]?: T[P]}</code></pre>
+            </section>
+            <section>
+                <h1>Conditional types</h1>
+                <pre><code class="typescript">
+                    Exclude&lt;T, U&gt;   //Things in T except from those assignable to U
+                    Extract&lt;T, U&gt;   //Things in T that are assignable to U
+                    NonNullable&lt;T&gt;  //Exclude&lt;T, null | undefined&gt;
+                    InstanceType&lt;T&gt; //The instance type of the class
+                    ReturnType&lt;T extends Function&gt; //The return type of the function(type) 
+                </code></pre>
+            </section>
+            <section>
+                <h1>Enforcing null-checking.</h1>
+                <pre><code class="typescript">function mySafeFunction(s: NonNullable&lt;string&gt;)</code></pre>
+            </section>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/js/reveal.min.js"></script>
