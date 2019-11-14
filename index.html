@@ -1,13 +1,11 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/reveal.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/css/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/lib/css/monokai.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css">
-    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
     <style>
         table tr td {
             vertical-align: middle !important;
@@ -128,11 +126,22 @@
                 <h1>Enforcing null-checking.</h1>
                 <pre><code class="typescript">function mySafeFunction(s: NonNullable&lt;string&gt;)</code></pre>
             </section>
+            <section>
+                <h1>Inline type-level imports</h1>
+                <pre><code class="typescript">{ property: import('some/module/path').moduleMember }</code></pre>
+            </section>
+            <section>
+                <h1>Types from properties</h1>
+                <pre><code class="typescript">{ property: import('some/module/path').moduleMember[property] }</code></pre>
+            </section>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.6.0/js/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/js/reveal.js"></script>
     <script>
-        Reveal.initialize({ height: '100%', width: '100%' });
+        Reveal.initialize({ height: '100%', width: '100%', controls: false,
+            dependencies: [
+                { src: "https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/highlight/highlight.js", async: true}
+            ] });
     </script>
 </body>
 
